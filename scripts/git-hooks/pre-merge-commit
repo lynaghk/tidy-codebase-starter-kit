@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# TODO: rewrite this script in a more familiar language?
+# these lines are regex comparisons to the string "merge main"
+if [[ $GIT_REFLOG_ACTION =~ ^merge ]]; then
+    if [[ $GIT_REFLOG_ACTION =~ main$ ]]; then
+        echo "########################################"
+        echo "# Please don't merge main into anything."
+        echo "#"
+        echo "# Please use git rebase instead."
+        echo "#"
+        echo
+        exit 1
+    fi
+fi

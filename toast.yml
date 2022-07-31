@@ -1,0 +1,49 @@
+image: ubuntu:20.04
+command_prefix: set -euo pipefail
+tasks:
+
+  dev:
+    cache: false
+    dependencies:
+      - install_project_deps
+    # Use mount_paths rather than input_paths here so we can pick up changes live
+    mount_paths:
+      - .
+    command: |
+      # TODO: better example
+      echo "starting server on port 8000"
+      python3 -m http.server
+    ports:
+      - 8000:8000
+
+
+  test:
+    dependencies:
+      - install_project_deps
+    input_paths:
+      - .
+    command: |
+      echo "tests pass!"
+
+
+  release:
+    dependencies:
+      - install_project_deps
+    input_paths:
+      - .
+    command: |
+      echo "bulid the release..."
+
+
+  install_project_deps:
+    dependencies:
+      - install_base_deps
+    command: |
+      # TODO: actually have some project deps
+      # npm install or whatever.
+
+
+  install_base_deps:
+    command: |
+      apt-get update
+      apt-get install -y --no-install-recommends python3
